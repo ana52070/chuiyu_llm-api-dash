@@ -16,7 +16,7 @@ export const PROVIDERS: ProviderConfig[] = [
   {
     id: 'agens',
     name: 'Agens Free',
-    baseUrl: 'https://apihub.agnes-ai.com/v1',
+    baseUrl: 'https://apihub.agnes-ai.com',
     apiType: 'openai',
     website: 'https://agnes-ai.com/',
   },
@@ -30,8 +30,8 @@ export const PROVIDERS: ProviderConfig[] = [
   {
     id: 'deepseek',
     name: 'DeepSeek',
-    baseUrl: 'https://api.deepseek.com/anthropic',
-    apiType: 'anthropic',
+    baseUrl: 'https://api.deepseek.com',
+    apiType: 'openai',
     website: 'https://platform.deepseek.com',
     quotaApi: {
       endpoint: 'https://api.deepseek.com/user/balance',
@@ -43,11 +43,11 @@ export const PROVIDERS: ProviderConfig[] = [
   {
     id: 'hakimi',
     name: '哈基米',
-    baseUrl: 'https://api.ricardochat.xyz/v1',
+    baseUrl: 'https://123444321.xyz',
     apiType: 'openai',
-    website: 'https://ai.ricardochat.cn/',
+    website: 'https://123444321.xyz/',
     quotaApi: {
-      endpoint: 'https://api.ricardochat.xyz/api/usage/token/',
+      endpoint: 'https://123444321.xyz/api/usage/token/',
       method: 'GET',
       parser: 'hakimi',
     },

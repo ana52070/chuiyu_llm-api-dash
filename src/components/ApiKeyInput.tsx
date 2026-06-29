@@ -10,13 +10,50 @@ interface ApiKeyInputProps {
 export default function ApiKeyInput({ value, onChange }: ApiKeyInputProps) {
   const [visible, setVisible] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [verified, setVerified] = useState(false);
+  const [pwd, setPwd] = useState('');
+  const [checking, setChecking] = useState(false);
+  const [pwdError, setPwdError] = useState('');
+
+  const verify = useCallback(async (): Promise<boolean> => {
+    if (verified) return true;
+    if (!pwd.trim()) { setPwdError('请输入密码'); return false; }
+    setChecking(true);
+    setPwdError('');
+    try {
+      const res = await fetch('/api/verify-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setVerified(true);
+        setPwd('');
+        return true;
+      }
+      setPwdError(data.error || '密码错误');
+      return false;
+    } catch {
+      setPwdError('验证请求失败');
+      return false;
+    } finally {
+      setChecking(false);
+    }
+  }, [verified, pwd]);
+
+  const handleToggle = useCallback(async () => {
+    if (!verified && !(await verify())) return;
+    setVisible(!visible);
+  }, [visible, verified, verify]);
 
   const handleCopy = useCallback(async () => {
     if (!value) return;
+    if (!verified && !(await verify())) return;
     await navigator.clipboard.writeText(value);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [value]);
+  }, [value, verified, verify]);
 
   const masked = value ? value.slice(0, 8) + '···' + value.slice(-4) : '';
 
@@ -48,7 +85,7 @@ export default function ApiKeyInput({ value, onChange }: ApiKeyInputProps) {
         />
         <button
           type="button"
-          onClick={() => setVisible(!visible)}
+          onClick={handleToggle}
           className="px-2.5 text-[#bfb9b0] hover:text-[#2d2a26] transition-colors shrink-0
                      border-l border-[#f0ece6]"
           tabIndex={-1}
@@ -78,6 +115,30 @@ export default function ApiKeyInput({ value, onChange }: ApiKeyInputProps) {
           {copied ? '已复制' : '复制'}
         </button>
       </div>
+
+      {!verified && (
+        <div className="mt-2 flex items-center gap-2">
+          <input
+            type="password"
+            value={pwd}
+            onChange={e => { setPwd(e.target.value); setPwdError(''); }}
+            onKeyDown={e => { if (e.key === 'Enter') handleToggle(); }}
+            placeholder="输入密码以查看/复制…"
+            autoComplete="off"
+            name="pwd"
+            className="flex-1 rounded-sm border border-[#e4ded6] bg-white px-3 py-1.5
+                       text-[13px] text-[#2d2a26] placeholder:text-[#bfb9b0]
+                       focus:border-[#bfb9b0] focus:outline-none focus:ring-1 focus:ring-[#d9d4cc]
+                       transition-all"
+          />
+          {pwdError && (
+            <span className="text-[12px] text-[#c4554d] shrink-0">{pwdError}</span>
+          )}
+          {checking && (
+            <div className="h-3.5 w-3.5 shrink-0 rounded-full border-2 border-[#e4ded6] border-t-[#d97757] animate-spin" />
+          )}
+        </div>
+      )}
     </div>
   );
 }

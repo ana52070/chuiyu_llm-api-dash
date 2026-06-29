@@ -29,7 +29,7 @@ export default function ProviderCard({ config, index }: ProviderCardProps) {
   const [quotaData, setQuotaData] = useState<QuotaData | null>(null);
   const [quotaError, setQuotaError] = useState<string | null>(null);
   const [quotaLoading, setQuotaLoading] = useState(false);
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [ocCookie, setOcCookie] = useState('');
   const [ocServerId, setOcServerId] = useState('');
 

@@ -1,65 +1,34 @@
-import Image from "next/image";
+import { PROVIDERS } from '@/lib/providers';
+import ProviderDashboard from '@/hooks/useProviders';
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="flex-1 mx-auto w-full max-w-5xl px-5 py-10 sm:px-6 lg:px-8">
+      <header className="mb-10">
+        <div className="flex items-baseline justify-between">
+          <div>
+            <p className="text-[11px] font-medium tracking-[0.25em] text-[#d97757] mb-2">
+              信号通道
+            </p>
+            <h1 className="text-[28px] font-semibold tracking-tight text-[#2d2a26]">
+              LLM API 仪表盘
+            </h1>
+          </div>
+          <span className="text-[11px] text-[#8c8780] font-mono">
+            {PROVIDERS.length} 个提供商
+          </span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        <p className="mt-2 text-[13px] text-[#8c8780] max-w-md leading-relaxed">
+          管理密钥、测试连通、浏览模型、监控额度——一站式管理所有大模型 API 接入。
+        </p>
+      </header>
+
+      <ProviderDashboard providers={PROVIDERS} />
+
+      <footer className="mt-16 pt-5 border-t border-[#e8e3dc] flex items-center justify-between text-[11px] text-[#bfb9b0]">
+        <span>密钥仅存储在浏览器本地 · 不会上传到任何服务器</span>
+        <span className="font-mono">v0.1</span>
+      </footer>
+    </main>
   );
 }
